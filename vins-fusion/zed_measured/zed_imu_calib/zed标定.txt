@@ -1,0 +1,28 @@
+机标定：
+roslaunch zed_wrapper zed.launch
+
+rosrun image_view image_view1 image:=/zed/zed_node/left/image_rect_color & rosrun image_view image_view image:=/zed/zed_node/right/image_rect_color
+
+rosrun topic_tools throttle messages /imu/data  200 /imu/data2
+rosrun topic_tools throttle messages /zed/zed_node/left/image_rect_color 20 /zed/zed_node/left/image_rect_color2
+rosrun topic_tools throttle messages /zed/zed_node/right/image_rect_color 20 /zed/zed_node/right/image_rect_color2
+
+rosbag record -O Kalib_data_vga.bag /imu/data2 /zed2/zed_node/left/image_rect_color2 /zed2/zed_node/right/image_rect_color2
+
+kalibr_calibrate_cameras --bag Kalib_data_vga.bag --topics /zed/zed_node/left/image_rect_color2 /zed/zed_node/right/image_rect_color2 --models pinhole-radtan  pinhole-radtan --target checkboard.yaml --bag-from-to 5 140 --show-extraction --approx-sync 0.02
+
+
+联合标定：
+
+#Accelerometers
+accelerometer_noise_density: 2.9752199084974767e-02   #Noise density (continuous-time)
+accelerometer_random_walk:   6.4581594699404568e-04   #Bias random walk
+
+#Gyroscopes
+gyroscope_noise_density:     1.8859041916749149e-02   #Noise density (continuous-time)
+gyroscope_random_walk:       7.1571870936377460e-04   #Bias random walk
+
+rostopic:                    /zed2/zed_node/imu/data_raw2   #the IMU ROS topic
+update_rate:                 200.0      #Hz (for discretization of the values above)
+
+kalibr_calibrate_imu_camera --target checkboard.yaml --bag /home/bhjx/tools/Zed_ws/Kalibr_data_vga.bag --bag-from-to 10 130 --cam cam.yaml --imu imu.yaml --imu-models scale-misalignment --timeoffset-padding 0.1

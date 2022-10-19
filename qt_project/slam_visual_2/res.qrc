@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>image/liosam.gif</file>
+        <file>image/vins-fusion.gif</file>
+        <file>image/orbslam2.gif</file>
+        <file>image/rtabmap.jpeg</file>
+        <file>bash/orb.sh</file>
+        <file>bash/velodyne.sh</file>
+        <file>bash/xsens.sh</file>
+    </qresource>
+</RCC>

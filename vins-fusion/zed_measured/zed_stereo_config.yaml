@@ -1,0 +1,75 @@
+%YAML:1.0
+
+#common parameters
+#support: 1 imu 1 cam; 1 imu 2 cam: 2 cam; 
+imu: 1         
+num_of_cam: 2  
+
+imu_topic: "/imu/data"
+image0_topic: "/zed/zed_node/left/image_rect_color"
+image1_topic: "/zed/zed_node/right/image_rect_color"
+output_path: "/home/bhjx/project/vins_ws/output/"
+
+cam0_calib: "cam0.yaml"
+cam1_calib: "cam1.yaml"
+image_width: 1280
+image_height: 720
+   
+
+# Extrinsic parameter between IMU and Camera.
+estimate_extrinsic: 1   # 0  Have an accurate extrinsic parameters. We will trust the following imu^R_cam, imu^T_cam, don't change it.
+                        # 1  Have an initial guess about extrinsic parameters. We will optimize around your initial guess.
+
+# camera to imu T
+body_T_cam0: !!opencv-matrix
+   rows: 4
+   cols: 4
+   dt: d
+   data:  [-0.025674538567002442, -0.020345264195547497, 0.9994633001237138, 0.0010581915523436573,
+           -0.99942333005964, 0.02274730466636371, -0.025210463361771906, -0.00014149845188868513,
+           -0.022222182653175993, -0.9995342066959133, -0.025210463361771906, -7.849204150082839e-05,
+           0, 0, 0, 1]
+
+
+
+body_T_cam1: !!opencv-matrix
+   rows: 4
+   cols: 4
+   dt: d
+   data:  [-0.022688425902599924, -0.019002110597556576, 0.9995619816314046, 0.12113203773671445,
+           -0.9995243461989474, 0.021320943652901048, -0.02228225117254995, -7.967155872643677e-06,
+          -0.020888194886801936, -0.9995920853801255, -0.019476810821665164, -0.00016048757028397798,
+          0, 0, 0, 1]
+
+#Multiple thread support
+multiple_thread: 1
+
+#feature traker paprameters
+max_cnt: 150            # max feature number in feature tracking
+min_dist: 30            # min distance between two features 
+freq: 10                # frequence (Hz) of publish tracking result. At least 10Hz for good estimation. If set 0, the frequence will be same as raw image 
+F_threshold: 1.0        # ransac threshold (pixel)
+show_track: 1           # publish tracking image as topic
+flow_back: 1            # perform forward and backward optical flow to improve feature tracking accuracy
+
+#optimization parameters
+max_solver_time: 0.04  # max solver itration time (ms), to guarantee real time
+max_num_iterations: 8   # max solver itrations, to guarantee real time
+keyframe_parallax: 10.0 # keyframe selection threshold (pixel)
+
+#imu parameters       The more accurate parameters you provide, the better performance
+acc_n: 1.9740799873834897e-02          # accelerometer measurement noise standard deviation. 
+gyr_n: 2.3704854385698929e-03         # gyroscope measurement noise standard deviation.     
+acc_w: 4.3015781912824339e-04       # accelerometer bias random work noise standard deviation.  
+gyr_w: 2.6685224155471368e-05       # gyroscope bias random work noise standard deviation.     
+g_norm: 9.81007     # gravity magnitude
+
+#unsynchronization parameters
+estimate_td: 0                      # online estimate time offset between camera and imu
+td: 0.0030339303812638805
+#td: 0                    
+#loop closure parameters
+load_previous_pose_graph: 0        # load and reuse previous pose graph; load from 'pose_graph_save_path'
+pose_graph_save_path: "/home/bhjx/project/vins_ws/output/pose_graph" # save and load path
+save_image: 0                   # save image in pose graph for visualization prupose; you can close this function by setting 0 
+

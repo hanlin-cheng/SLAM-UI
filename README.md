@@ -56,3 +56,4 @@ https://github.com/HKUST-Aerial-Robotics/VINS-Fusion.git
 
 利用qt creator运行集成算法，源代码位于src文件夹内
 
+> *葡萄美酒夜光杯，欲饮琵琶马上催。醉卧沙场君莫笑，古来征战几人回？*

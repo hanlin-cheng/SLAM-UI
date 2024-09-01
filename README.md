@@ -52,7 +52,7 @@ https://github.com/HKUST-Aerial-Robotics/VINS-Fusion.git
 
 你可以在vins-fusion文件夹下找到视觉与imu的标定文件。
 
-# 2.运行qt终端界面
+# 2.运行qt界面
 
 利用qt creator运行集成算法，源代码位于src文件夹内
 
